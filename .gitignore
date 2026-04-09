@@ -52,3 +52,8 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+/.idea/encodings.xml
+/.idea/indexLayout.xml
+/.idea/vcs.xml
+/.idea/projectSettingsUpdater.xml
+/.idea/workspace.xml
