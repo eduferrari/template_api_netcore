@@ -4,7 +4,7 @@ using TemplateApi.Application.Products.Commands.UpdateProduct;
 using TemplateApi.Domain.Common.Interfaces;
 using TemplateApi.Domain.Entities;
 
-namespace TemplateApi.Tests.Application.Products.Commands.UpdateProduct;
+namespace TemplateApi.UnitTests.Application.Products.Commands.UpdateProduct;
 
 public class UpdateProductCommandHandlerTests
 {

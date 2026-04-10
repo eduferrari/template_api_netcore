@@ -22,6 +22,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\TemplateApi.Application\TemplateApi.Application.csproj" />
+    <ProjectReference Include="..\..\src\TemplateApi.Domain\TemplateApi.Domain.csproj" />
+    <ProjectReference Include="..\..\src\TemplateApi.Infrastructure\TemplateApi.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

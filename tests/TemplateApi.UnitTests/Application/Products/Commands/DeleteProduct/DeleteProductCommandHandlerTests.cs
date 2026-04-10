@@ -4,7 +4,7 @@ using TemplateApi.Application.Products.Commands.DeleteProduct;
 using TemplateApi.Domain.Common.Interfaces;
 using TemplateApi.Domain.Entities;
 
-namespace TemplateApi.Tests.Application.Products.Commands.DeleteProduct;
+namespace TemplateApi.UnitTests.Application.Products.Commands.DeleteProduct;
 
 public class DeleteProductCommandHandlerTests
 {
