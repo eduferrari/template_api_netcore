@@ -4,7 +4,7 @@ using TemplateApi.Application.Products.Commands.CreateProduct;
 using TemplateApi.Domain.Common.Interfaces;
 using TemplateApi.Domain.Entities;
 
-namespace TemplateApi.Tests.Application.Products.Commands.CreateProduct;
+namespace TemplateApi.UnitTests.Application.Products.Commands.CreateProduct;
 
 public class CreateProductCommandHandlerTests
 {

@@ -13,9 +13,12 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlServer(
-                configuration.GetConnectionString("DefaultConnection")));
+        if (services.All(d => d.ServiceType != typeof(DbContextOptions<AppDbContext>)))
+        {
+            services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlServer(
+                    configuration.GetConnectionString("DefaultConnection")));
+        }
 
         services.AddScoped<IProductRepository, ProductRepository>();
 

@@ -1,7 +1,7 @@
 using FluentAssertions;
 using TemplateApi.Domain.Entities;
 
-namespace TemplateApi.Tests.Domain;
+namespace TemplateApi.UnitTests.Domain;
 
 public class ProductTests
 {
