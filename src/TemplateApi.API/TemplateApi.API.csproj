@@ -2,9 +2,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TemplateApi.Application\TemplateApi.Application.csproj" />
+    <ProjectReference Include="..\TemplateApi.Infrastructure\TemplateApi.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.5" />
     <PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.7" />
