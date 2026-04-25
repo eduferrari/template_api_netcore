@@ -53,6 +53,25 @@ public class ProductsControllerTests : IClassFixture<CustomWebApplicationFactory
     }
 
     [Fact]
+    public async Task GetById_ShouldReturnOk_WhenProductExists()
+    {
+        // Arrange
+        var createCommand = new CreateProductCommand("Get By Id Test", "Desc", 10m);
+        var createResponse = await _client.PostAsJsonAsync("/api/products", createCommand);
+        var created = await createResponse.Content.ReadFromJsonAsync<CreatedResponse>();
+        var productId = created!.Id;
+
+        // Act
+        var response = await _client.GetAsync($"/api/products/{productId}");
+
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        var product = await response.Content.ReadFromJsonAsync<ProductResponse>();
+        product!.Id.Should().Be(productId);
+        product.Name.Should().Be(createCommand.Name);
+    }
+
+    [Fact]
     public async Task Update_ShouldReturnNoContent_WhenProductExists()
     {
         // Arrange - Primeiro cria um produto
@@ -87,4 +106,5 @@ public class ProductsControllerTests : IClassFixture<CustomWebApplicationFactory
     }
 
     private record CreatedResponse(Guid Id);
+    private record ProductResponse(Guid Id, string Name, string Description, decimal Price, bool IsActive);
 }
