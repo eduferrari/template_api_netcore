@@ -6,6 +6,9 @@ using TemplateApi.API.Controllers;
 using TemplateApi.Application.Users.Commands.CreateUser;
 using TemplateApi.Application.Users.Commands.InactivateUser;
 using TemplateApi.Application.Users.Commands.UpdateUser;
+using TemplateApi.Application.Users.DTOs;
+using TemplateApi.Application.Users.Queries.GetAllUsers;
+using TemplateApi.Application.Users.Queries.GetUserById;
 
 namespace TemplateApi.UnitTests.API.Controllers;
 
@@ -68,16 +71,39 @@ public class UsersControllerTests
     }
 
     [Fact]
-    public void GetById_ShouldReturnOk_WithPlaceholderId()
+    public async Task GetById_ShouldReturnOk_WhenUserExists()
     {
         // Arrange
         var userId = Guid.NewGuid();
+        var userDto = new UserDto(userId, "Test User", "test@test.com", true);
+        _mediator.Send(Arg.Any<GetUserByIdQuery>(), Arg.Any<CancellationToken>())
+            .Returns(userDto);
 
         // Act
-        var result = _controller.GetById(userId);
+        var result = await _controller.GetById(userId, default);
 
         // Assert
         var okResult = result.Should().BeOfType<OkObjectResult>().Subject;
-        okResult.Value.Should().BeEquivalentTo(new { id = userId });
+        okResult.Value.Should().Be(userDto);
+    }
+
+    [Fact]
+    public async Task GetAll_ShouldReturnOk_WithUsers()
+    {
+        // Arrange
+        var users = new List<UserDto>
+        {
+            new(Guid.NewGuid(), "User 1", "user1@test.com", true),
+            new(Guid.NewGuid(), "User 2", "user2@test.com", true)
+        };
+        _mediator.Send(Arg.Any<GetAllUsersQuery>(), Arg.Any<CancellationToken>())
+            .Returns(users);
+
+        // Act
+        var result = await _controller.GetAll(default);
+
+        // Assert
+        var okResult = result.Should().BeOfType<OkObjectResult>().Subject;
+        okResult.Value.Should().BeEquivalentTo(users);
     }
 }

@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using TemplateApi.Application.Users.Commands.CreateUser;
 using TemplateApi.Application.Users.Commands.InactivateUser;
 using TemplateApi.Application.Users.Commands.UpdateUser;
+using TemplateApi.Application.Users.Queries.GetAllUsers;
+using TemplateApi.Application.Users.Queries.GetUserById;
 
 namespace TemplateApi.API.Controllers;
 
@@ -38,11 +40,17 @@ public class UsersController(IMediator mediator) : ControllerBase
         return NoContent();
     }
 
-    [HttpGet("{id:guid}")]
-    public IActionResult GetById(Guid id)
+    [HttpGet]
+    public async Task<IActionResult> GetAll(CancellationToken ct)
     {
-        // Placeholder para CreatedAtAction funcionar. 
-        // Normalmente haveria uma Query aqui, mas o requisito não pediu explicitamente o Get.
-        return Ok(new { id });
+        var users = await mediator.Send(new GetAllUsersQuery(), ct);
+        return Ok(users);
+    }
+
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetById(Guid id, CancellationToken ct)
+    {
+        var user = await mediator.Send(new GetUserByIdQuery(id), ct);
+        return user is not null ? Ok(user) : NotFound();
     }
 }

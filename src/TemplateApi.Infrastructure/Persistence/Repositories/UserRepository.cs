@@ -28,4 +28,7 @@ public class UserRepository : IUserRepository
         _context.Set<User>().Update(entity);
         await _context.SaveChangesAsync(ct);
     }
+
+    public async Task<IEnumerable<User>> GetAllAsync(CancellationToken ct = default)
+        => await _context.Set<User>().AsNoTracking().ToListAsync(ct);
 }
