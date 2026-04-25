@@ -16,7 +16,7 @@ public static class DependencyInjection
         if (services.All(d => d.ServiceType != typeof(DbContextOptions<AppDbContext>)))
         {
             services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(
+                options.UseNpgsql(
                     configuration.GetConnectionString("DefaultConnection")));
         }
 

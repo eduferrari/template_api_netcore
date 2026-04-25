@@ -11,7 +11,7 @@ namespace TemplateApi.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]
+//[Authorize]
 public class UsersController(IMediator mediator) : ControllerBase
 {
     [HttpPost]

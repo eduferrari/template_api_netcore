@@ -10,7 +10,7 @@ namespace TemplateApi.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]
+//[Authorize]
 public class ProductsController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
