@@ -57,3 +57,7 @@ nunit-*.xml
 /.idea/vcs.xml
 /.idea/projectSettingsUpdater.xml
 /.idea/workspace.xml
+
+# IDEs
+.vscode/
+.idea/
