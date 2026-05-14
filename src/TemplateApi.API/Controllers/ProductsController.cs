@@ -10,17 +10,13 @@ namespace TemplateApi.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-//[Authorize]
+[Authorize]
 public class ProductsController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> GetAll(
-        [FromQuery] int page = 1,
-        [FromQuery] int pageSize = 20,
-        CancellationToken ct = default)
+    public async Task<IActionResult> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 20, CancellationToken ct = default)
     {
-        var result = await mediator.Send(
-            new GetAllProductsQuery(page, pageSize), ct);
+        var result = await mediator.Send(new GetAllProductsQuery(page, pageSize), ct);
         return Ok(result);
     }
 
@@ -32,19 +28,14 @@ public class ProductsController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(
-        [FromBody] CreateProductCommand command,
-        CancellationToken ct)
+    public async Task<IActionResult> Create([FromBody] CreateProductCommand command, CancellationToken ct)
     {
         var id = await mediator.Send(command, ct);
         return CreatedAtAction(nameof(GetById), new { id }, new { id });
     }
 
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> Update(
-        Guid id,
-        [FromBody] UpdateProductCommand command,
-        CancellationToken ct)
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateProductCommand command, CancellationToken ct)
     {
         await mediator.Send(command with { Id = id }, ct);
         return NoContent();

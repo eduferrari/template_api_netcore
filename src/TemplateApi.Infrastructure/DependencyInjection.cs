@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using TemplateApi.Domain.Common.Interfaces;
 using TemplateApi.Infrastructure.Persistence;
 using TemplateApi.Infrastructure.Persistence.Repositories;
+using TemplateApi.Infrastructure.Services;
 
 namespace TemplateApi.Infrastructure;
 
@@ -22,6 +23,7 @@ public static class DependencyInjection
 
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IJwtService, JwtService>();
 
         return services;
     }
