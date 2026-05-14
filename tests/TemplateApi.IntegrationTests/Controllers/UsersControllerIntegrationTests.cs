@@ -74,14 +74,25 @@ public class UsersControllerIntegrationTests : IClassFixture<CustomWebApplicatio
     }
 
     [Fact]
-    public async Task GetById_ShouldReturnOk()
+    public async Task GetById_ShouldReturnOk_WhenUserExists()
     {
+        // Arrange
+        var createCommand = new CreateUserCommand("Get By Id", "getbyid@test.com", "pass123");
+        var createResponse = await _client.PostAsJsonAsync("/api/users", createCommand);
+        var created = await createResponse.Content.ReadFromJsonAsync<CreatedResponse>();
+        var userId = created!.Id;
+
         // Act
-        var response = await _client.GetAsync($"/api/users/{Guid.NewGuid()}");
+        var response = await _client.GetAsync($"/api/users/{userId}");
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
+        var user = await response.Content.ReadFromJsonAsync<UserResponse>();
+        user!.Id.Should().Be(userId);
+        user.Name.Should().Be(createCommand.Name);
+        user.Email.Should().Be(createCommand.Email);
     }
 
     private record CreatedResponse(Guid Id);
+    private record UserResponse(Guid Id, string Name, string Email, bool Active);
 }
