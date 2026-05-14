@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using TemplateApi.Domain.Common.Interfaces;
 using TemplateApi.Infrastructure.Persistence;
 using TemplateApi.Infrastructure.Persistence.Repositories;
+using TemplateApi.Infrastructure.Services;
 
 namespace TemplateApi.Infrastructure;
 
@@ -13,11 +14,16 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlServer(
-                configuration.GetConnectionString("DefaultConnection")));
+        if (services.All(d => d.ServiceType != typeof(DbContextOptions<AppDbContext>)))
+        {
+            services.AddDbContext<AppDbContext>(options =>
+                options.UseNpgsql(
+                    configuration.GetConnectionString("DefaultConnection")));
+        }
 
         services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IJwtService, JwtService>();
 
         return services;
     }

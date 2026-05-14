@@ -10,6 +10,7 @@ public class AppDbContext : DbContext
         : base(options) { }
 
     public DbSet<Product> Products => Set<Product>();
+    public DbSet<User> Users => Set<User>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -21,6 +22,14 @@ public class AppDbContext : DbContext
             b.HasKey(x => x.Id);
             b.Property(x => x.Name).HasMaxLength(200).IsRequired();
             b.Property(x => x.Price).HasColumnType("decimal(18,2)");
+        });
+
+        modelBuilder.Entity<User>(b =>
+        {
+            b.HasKey(x => x.Id);
+            b.Property(x => x.Name).HasMaxLength(200).IsRequired();
+            b.Property(x => x.Email).HasMaxLength(200).IsRequired();
+            b.HasIndex(x => x.Email).IsUnique();
         });
 
         base.OnModelCreating(modelBuilder);
