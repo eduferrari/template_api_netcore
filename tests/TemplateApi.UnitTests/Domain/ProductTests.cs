@@ -48,12 +48,28 @@ public class ProductTests
         var newPrice = 20m;
 
         // Act
-        product.Update(newName, newDescription, newPrice);
+        product.Update(newName, newDescription, newPrice, true);
 
         // Assert
         product.Name.Should().Be(newName);
         product.Description.Should().Be(newDescription);
         product.Price.Should().Be(newPrice);
+        product.IsActive.Should().BeTrue();
+    }
+
+    [Fact]
+    public void Create_WithIsActiveFalse_ShouldPersistInactive()
+    {
+        var product = Product.Create("P", "D", 10m, isActive: false);
+        product.IsActive.Should().BeFalse();
+    }
+
+    [Fact]
+    public void Update_ShouldChangeIsActive()
+    {
+        var product = Product.Create("Old Name", "Old Description", 5m);
+        product.Update("N", "D", 1m, false);
+        product.IsActive.Should().BeFalse();
     }
 
     [Fact]
