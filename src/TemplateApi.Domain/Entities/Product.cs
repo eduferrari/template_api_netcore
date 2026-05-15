@@ -11,22 +11,24 @@ public class Product : BaseEntity
 
     protected Product() { }
 
-    public static Product Create(string name, string description, decimal price)
+    public static Product Create(string name, string description, decimal price, bool isActive = true)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
         return new Product
         {
             Name = name,
             Description = description,
-            Price = price
+            Price = price,
+            IsActive = isActive
         };
     }
 
-    public void Update(string name, string description, decimal price)
+    public void Update(string name, string description, decimal price, bool isActive)
     {
         Name = name;
         Description = description;
         Price = price;
+        IsActive = isActive;
         SetUpdatedAt();
     }
 

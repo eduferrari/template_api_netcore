@@ -18,7 +18,6 @@ public class ProductRepository : IProductRepository
         int page, int pageSize, CancellationToken ct = default)
         => await _context.Products
             .AsNoTracking()
-            .Where(x => x.IsActive)
             .OrderBy(x => x.Name)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)

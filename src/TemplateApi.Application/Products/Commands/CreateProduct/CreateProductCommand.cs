@@ -5,4 +5,5 @@ namespace TemplateApi.Application.Products.Commands.CreateProduct;
 public record CreateProductCommand(
     string Name,
     string Description,
-    decimal Price) : IRequest<Guid>;
+    decimal Price,
+    bool? IsActive = null) : IRequest<Guid>;
