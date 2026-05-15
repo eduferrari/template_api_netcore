@@ -18,7 +18,8 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
         var product = Product.Create(
             request.Name,
             request.Description,
-            request.Price);
+            request.Price,
+            request.IsActive ?? true);
 
         await _repository.AddAsync(product, cancellationToken);
 
