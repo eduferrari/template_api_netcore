@@ -28,7 +28,7 @@ public class UpdateProductCommandHandlerTests
         // Se eu precisar de um Guid específico, posso precisar ajustar o BaseEntity ou usar reflexão.
         // Mas por enquanto vamos assumir que GetByIdAsync retorna o que eu configurar.
         
-        var command = new UpdateProductCommand(productId, "New Name", "New Desc", 20m);
+        var command = new UpdateProductCommand(productId, "New Name", "New Desc", 20m, false);
         var ct = CancellationToken.None;
 
         _repository.GetByIdAsync(productId, ct).Returns(existingProduct);
@@ -39,6 +39,7 @@ public class UpdateProductCommandHandlerTests
         // Assert
         existingProduct.Name.Should().Be(command.Name);
         existingProduct.Price.Should().Be(command.Price);
+        existingProduct.IsActive.Should().BeFalse();
         await _repository.Received(1).UpdateAsync(existingProduct, ct);
     }
 
@@ -57,5 +58,21 @@ public class UpdateProductCommandHandlerTests
 
         // Assert
         await act.Should().ThrowAsync<KeyNotFoundException>();
+    }
+
+    [Fact]
+    public async Task Handle_IsActiveNull_ShouldPreserveExistingFlag()
+    {
+        var productId = Guid.NewGuid();
+        var existingProduct = Product.Create("Old", "Desc", 10m, isActive: false);
+        var command = new UpdateProductCommand(productId, "New Name", "New Desc", 20m);
+        var ct = CancellationToken.None;
+
+        _repository.GetByIdAsync(productId, ct).Returns(existingProduct);
+
+        await _handler.Handle(command, ct);
+
+        existingProduct.IsActive.Should().BeFalse();
+        existingProduct.Name.Should().Be("New Name");
     }
 }

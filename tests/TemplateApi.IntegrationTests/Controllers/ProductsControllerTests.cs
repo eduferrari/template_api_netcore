@@ -43,6 +43,18 @@ public class ProductsControllerTests : IClassFixture<CustomWebApplicationFactory
     }
 
     [Fact]
+    public async Task Create_ShouldPersistIsActive_WhenFalse()
+    {
+        var command = new CreateProductCommand("Inativo", "Desc", 10m, false);
+        var response = await _client.PostAsJsonAsync("/api/products", command);
+        response.StatusCode.Should().Be(HttpStatusCode.Created);
+        var created = await response.Content.ReadFromJsonAsync<CreatedResponse>();
+        var get = await _client.GetAsync($"/api/products/{created!.Id}");
+        var product = await get.Content.ReadFromJsonAsync<ProductResponse>();
+        product!.IsActive.Should().BeFalse();
+    }
+
+    [Fact]
     public async Task GetAll_ShouldReturnOk()
     {
         // Act
@@ -80,13 +92,17 @@ public class ProductsControllerTests : IClassFixture<CustomWebApplicationFactory
         var created = await createResponse.Content.ReadFromJsonAsync<CreatedResponse>();
         var productId = created!.Id;
 
-        var updateCommand = new UpdateProductCommand(productId, "Atualizado", "Nova Desc", 15m);
+        var updateCommand = new UpdateProductCommand(productId, "Atualizado", "Nova Desc", 15m, false);
 
         // Act
         var response = await _client.PutAsJsonAsync($"/api/products/{productId}", updateCommand);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        var get = await _client.GetAsync($"/api/products/{productId}");
+        var product = await get.Content.ReadFromJsonAsync<ProductResponse>();
+        product!.IsActive.Should().BeFalse();
+        product.Name.Should().Be("Atualizado");
     }
 
     [Fact]

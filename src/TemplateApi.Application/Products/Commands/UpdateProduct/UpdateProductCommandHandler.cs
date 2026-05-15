@@ -15,7 +15,11 @@ public class UpdateProductCommandHandler(IProductRepository repository)
         if (product is null)
             throw new KeyNotFoundException("Product not found");
 
-        product.Update(request.Name, request.Description, request.Price);
+        product.Update(
+            request.Name,
+            request.Description,
+            request.Price,
+            request.IsActive ?? product.IsActive);
 
         await repository.UpdateAsync(product, ct);
     }
